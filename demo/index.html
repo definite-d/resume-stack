@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeStack Test</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Test ResumeStack</h1>
+        <p class="subtitle">Click the button to initialize and resume a transaction.</p>
+        <p class="disclaimer">ResumeStack is in no way directly affiliated with Paystack.</p>
+        <button id="resumeBtn">Resume Transaction</button>
+        <div id="status"></div>
+    </div>
+
+    <script src="resume-stack.js"></script>
+    <script>
+        document.getElementById('resumeBtn').addEventListener('click', async function () {
+            const statusEl = document.getElementById('status');
+            const resumeBtn = document.getElementById('resumeBtn');
+
+            statusEl.textContent = 'Initializing transaction...';
+            statusEl.className = 'loading';
+            resumeBtn.disabled = true;
+
+            try {
+                const response = await fetch('/init-transaction', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: "500000", // 5000 NGN as string
+                        email: 'customer@email.com',
+                        metadata: {
+                            cancel_action: window.location.href
+                        }
+                    })
+                });
+                const data = await response.json();
+                if (data.status && data.data.access_code) {
+                    const accessCode = data.data.access_code;
+                    statusEl.textContent = 'Transaction initialized. Opening modal...';
+                    statusEl.className = 'success';
+                    new ResumeStack({
+                        accessCode: accessCode,
+                        onSuccess: function (data) {
+                            console.log('Success:', data);
+                            statusEl.textContent = 'Transaction successful!';
+                            statusEl.className = 'success';
+                            resumeBtn.disabled = false;
+                        },
+                        onError: function (data) {
+                            console.log('Error:', data);
+                            statusEl.textContent = 'Transaction error!';
+                            statusEl.className = 'error';
+                            resumeBtn.disabled = false;
+                        },
+                        onCancel: function () {
+                            console.log('Cancelled');
+                            statusEl.textContent = 'Transaction cancelled!';
+                            statusEl.className = '';
+                            resumeBtn.disabled = false;
+                        },
+                        theme: 'auto',
+                        blur: '0.2rem'
+                    });
+                } else {
+                    throw new Error(data.message || data.error || 'Init failed');
+                }
+            } catch (error) {
+                statusEl.textContent = 'Error: ' + error.message;
+                statusEl.className = 'error';
+                resumeBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
