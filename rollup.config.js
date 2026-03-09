@@ -1,8 +1,9 @@
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
+import { defineConfig } from "rollup";
 
-export default [
+export default defineConfig([
   // UMD build
   {
     input: "src/index.ts",
@@ -13,7 +14,9 @@ export default [
       sourcemap: true,
     },
     plugins: [
-      nodeResolve(),
+      nodeResolve({
+        preferBuiltins: true,
+      }),
       typescript({
         tsconfig: "./tsconfig.json",
         declaration: true,
@@ -32,7 +35,9 @@ export default [
       sourcemap: true,
     },
     plugins: [
-      nodeResolve(),
+      nodeResolve({
+        preferBuiltins: true,
+      }),
       typescript({
         tsconfig: "./tsconfig.json",
         declaration: false, // Only generate declaration in UMD build
@@ -40,4 +45,4 @@ export default [
       terser(),
     ],
   },
-];
+]);
