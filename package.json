@@ -1,6 +1,6 @@
 {
   "name": "resume-stack",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A simple alternative(?) to InlineJS for transaction resumption alone with dark mode support",
   "type": "module",
   "main": "dist/index.js",
