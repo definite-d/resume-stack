@@ -1,6 +1,6 @@
 {
   "name": "resume-stack",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple alternative(?) to InlineJS for transaction resumption alone with dark mode support",
   "type": "module",
   "main": "dist/index.js",
@@ -15,9 +15,9 @@
     "clean": "rm -rf dist",
     "demo": "npm run build && cp dist/index.js demo/resume-stack.js && cd demo && python server.py",
     "prepublishOnly": "npm run clean && npm run build",
-    "release:patch": "npm version patch --no-git-tag-version && git tag v$(node -p \"require('./package.json').version\") && git add package.json && git commit -m \"release $(node -p \"require('./package.json').version\")\" && git push && git push origin --tags",
-    "release:minor": "npm version minor --no-git-tag-version && git tag v$(node -p \"require('./package.json').version\") && git add package.json && git commit -m \"release $(node -p \"require('./package.json').version\")\" && git push && git push origin --tags",
-    "release:major": "npm version major --no-git-tag-version && git tag v$(node -p \"require('./package.json').version\") && git add package.json && git commit -m \"release $(node -p \"require('./package.json').version\")\" && git push && git push origin --tags"
+    "release:patch": "npm version patch --no-git-tag-version && git tag v$(node -p \"require('./package.json').version\") && git add package.json package-lock.json && git commit -m \"release $(node -p \"require('./package.json').version\")\" && git push && git push origin --tags",
+    "release:minor": "npm version minor --no-git-tag-version && git tag v$(node -p \"require('./package.json').version\") && git add package.json package-lock.json && git commit -m \"release $(node -p \"require('./package.json').version\")\" && git push && git push origin --tags",
+    "release:major": "npm version major --no-git-tag-version && git tag v$(node -p \"require('./package.json').version\") && git add package.json package-lock.json && git commit -m \"release $(node -p \"require('./package.json').version\")\" && git push && git push origin --tags"
   },
   "keywords": [
     "transaction",
