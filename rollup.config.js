@@ -2,6 +2,9 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
 import { defineConfig } from "rollup";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
 
 export default defineConfig([
   // UMD build
@@ -25,6 +28,7 @@ export default defineConfig([
       }),
       terser(),
     ],
+    external: ["crypto"],
   },
   // ES Module build
   {
@@ -44,5 +48,6 @@ export default defineConfig([
       }),
       terser(),
     ],
+    external: ["crypto"],
   },
 ]);
