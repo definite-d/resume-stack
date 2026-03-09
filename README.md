@@ -3,7 +3,8 @@
 A TypeScript library providing an alternative to Paystack's InlineJS for modal transaction resumption. It displays a modal with Paystack's checkout iframe using an access code, with support for dark mode and blur effects.
 
 **Note**: Not affiliated with Paystack. Use at your own risk.
-License: The Unlicense
+
+**License**: The Unlicense
 
 ## Features
 
