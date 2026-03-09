@@ -3,8 +3,26 @@ import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
 import { defineConfig } from "rollup";
 import { createRequire } from "module";
+import { rollup } from "rollup";
 
 const require = createRequire(import.meta.url);
+
+// Crypto polyfill plugin
+const cryptoPolyfill = {
+  name: "crypto-polyfill",
+  resolveId(source) {
+    if (source === "crypto") {
+      return { id: "crypto", external: true };
+    }
+    return null;
+  },
+  load(id) {
+    if (id === "crypto") {
+      return 'import { createRequire } from "module"; const require = createRequire(import.meta.url); export default require("crypto");';
+    }
+    return null;
+  },
+};
 
 export default defineConfig([
   // UMD build
@@ -17,6 +35,7 @@ export default defineConfig([
       sourcemap: true,
     },
     plugins: [
+      cryptoPolyfill,
       nodeResolve({
         preferBuiltins: true,
       }),
@@ -28,7 +47,6 @@ export default defineConfig([
       }),
       terser(),
     ],
-    external: ["crypto"],
   },
   // ES Module build
   {
@@ -39,6 +57,7 @@ export default defineConfig([
       sourcemap: true,
     },
     plugins: [
+      cryptoPolyfill,
       nodeResolve({
         preferBuiltins: true,
       }),
@@ -48,6 +67,5 @@ export default defineConfig([
       }),
       terser(),
     ],
-    external: ["crypto"],
   },
 ]);
